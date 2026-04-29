@@ -58,6 +58,6 @@ jobs:
           # Wait for EC2 to be fully ready to accept SSH
           sleep 30
           # Create dynamic inventory on the fly
-          echo "${{ env.EC2_IP }} ansible_user=ubuntu" > inventory.ini
+          echo "$EC2_IP ansible_user=ubuntu" > inventory.ini
           # Run the playbook
           ansible-playbook -i inventory.ini playbook.yml

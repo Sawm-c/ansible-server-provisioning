@@ -97,12 +97,18 @@ data "aws_ami" "ubuntu" {
   }
 }
 
+# --- SSH Key Pair ---
+resource "aws_key_pair" "deployer" {
+  key_name   = var.key_name
+  public_key = var.public_key
+}
+
 resource "aws_instance" "app_server" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = var.instance_type
   subnet_id              = module.vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.app_sg.id]
-  key_name               = var.key_name
+  key_name               = aws_key_pair.deployer.key_name
 
   tags = {
     Name    = "${var.project_name}-server"

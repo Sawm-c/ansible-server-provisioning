@@ -17,6 +17,11 @@ variable "instance_type" {
 }
 
 variable "key_name" {
-  description = "Name of the AWS EC2 Key Pair to allow SSH access (must already exist in AWS)"
+  description = "Name of the AWS EC2 Key Pair to allow SSH access"
+  type        = string
+}
+
+variable "public_key" {
+  description = "Public key content for SSH access"
   type        = string
 }

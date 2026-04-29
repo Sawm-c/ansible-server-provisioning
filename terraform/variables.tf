@@ -20,3 +20,8 @@ variable "key_name" {
   description = "Name of the AWS EC2 Key Pair to allow SSH access (must already exist in AWS)"
   type        = string
 }
+
+variable "public_key" {
+  description = "Name of the AWS EC2 Key Pair to allow SSH access (must already exist in AWS)"
+  type        = string
+}

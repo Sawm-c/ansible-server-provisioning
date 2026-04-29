@@ -20,6 +20,11 @@
           - python3-setuptools
         state: present
 
+    - name: Install passlib for password hashing
+      pip:
+        name: passlib
+        state: present
+
     - name: Add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg

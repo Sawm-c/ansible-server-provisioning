@@ -1,0 +1,79 @@
+---
+- name: Server Auto-Provisioning
+  hosts: all
+  become: true
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install required dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: present
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Install Docker and Nginx
+      apt:
+        name:
+          - docker-ce
+          - nginx
+        state: present
+        update_cache: true
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Start and enable Nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Create deploy user
+      user:
+        name: deploy
+        password: "{{ 'deploy' | password_hash('sha512') }}"
+        groups: docker,sudo
+        append: true
+        shell: /bin/bash
+
+    - name: Set up Nginx basic configuration
+      copy:
+        dest: /var/www/html/index.html
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head><title>Provisioned by Ansible</title></head>
+          <body>
+            <h1>Server successfully provisioned by Ansible!</h1>
+            <p>Docker and Nginx are running.</p>
+          </body>
+          </html>
+      notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted

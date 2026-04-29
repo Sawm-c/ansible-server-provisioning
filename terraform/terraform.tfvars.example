@@ -1,0 +1,4 @@
+aws_region    = "ap-southeast-1"
+project_name  = "ansible-provisioning"
+instance_type = "t2.micro"
+key_name      = "your-key-pair-name" # Thay bằng tên key pair của bạn trên AWS

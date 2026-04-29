@@ -52,6 +52,9 @@ jobs:
           echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
+      - name: Install Python Dependencies for Ansible
+        run: pip install passlib
+
       - name: Run Ansible Playbook
         working-directory: ./ansible
         env:

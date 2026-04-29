@@ -36,7 +36,7 @@ jobs:
         working-directory: ./terraform
         run: terraform apply -auto-approve
         env:
-          TF_VAR_key_name: "github-actions-key"
+          TF_VAR_key_name: "ansible-key-new"
           TF_VAR_public_key: "${{ secrets.EC2_SSH_PUBLIC_KEY }}"
 
       - name: Get EC2 Public IP

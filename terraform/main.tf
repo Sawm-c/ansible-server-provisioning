@@ -11,6 +11,11 @@ provider "aws" {
   region = var.aws_region
 }
 
+# --- Data Sources ---
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 # --- Networking ---
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
@@ -19,7 +24,7 @@ module "vpc" {
   name = "${var.project_name}-vpc"
   cidr = "10.0.0.0/16"
 
-  azs            = ["${var.aws_region}"]
+  azs            = [data.aws_availability_zones.available.names[0]]
   public_subnets = ["10.0.1.0/24"]
 
   enable_dns_hostnames = true
